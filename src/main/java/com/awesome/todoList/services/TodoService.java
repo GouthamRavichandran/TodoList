@@ -24,6 +24,15 @@ public class TodoService {
         return todoRepo.save(todo);
     }
 
+    //Edit a To do
+    public Todo editTodo(int todoId, Todo editedTodo) {
+        Todo todo = todoRepo.findById(todoId).orElseThrow(() -> new InvalidTodoException("Todo not found"));
+        todo.setDescription(editedTodo.getDescription());
+        todo.setStatus(editedTodo.isStatus());
+        return todoRepo.save(todo);
+    }
+
+
     // Method to permanently delete a task
     public void deleteTodo(int todoId) {
         Todo todo = todoRepo.findById(todoId)
@@ -33,11 +42,11 @@ public class TodoService {
     }
 
     // Update the active or inactive status of a task
-    public Todo updateTodoStatus(int todoId, boolean status) {
+    public Todo updateTodoStatus(int todoId, Todo updatedTodo) {
         Todo todo = todoRepo.findById(todoId)
                 .orElseThrow(() -> new InvalidTodoException("Oh oh! That Todo might have already been deleted. No sweat, just create a new one if needed."));
 
-        todo.setStatus(status); // Update the completion status
+        todo.setStatus(updatedTodo.isStatus()); // Update the completion status
         return todoRepo.save(todo);
     }
 

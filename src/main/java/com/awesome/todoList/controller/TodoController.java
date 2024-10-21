@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -46,12 +45,20 @@ public class TodoController {
     }
 
     // Update To do status
-    @PutMapping("/{todoId}/status")
+    @PutMapping("/status/{todoId}")
     public ResponseEntity<Todo> updateTodoStatus(@PathVariable int todoId,
-                                                 @RequestParam boolean status) {
-        Todo updatedTodo = todoService.updateTodoStatus(todoId, status);
+                                                 @RequestBody Todo updatedTodo) {
+        Todo todoStatus = todoService.updateTodoStatus(todoId, updatedTodo);
         return ResponseEntity.ok(updatedTodo);
     }
+
+    //Edit a To do
+    @PutMapping("/edit/{todoId}")
+    public ResponseEntity<Todo> editTodo(@PathVariable int todoId, @RequestBody Todo editedTodo) {
+        Todo todo = todoService.editTodo(todoId, editedTodo);
+        return ResponseEntity.ok(todo);
+    }
+
 
     // Delete a To do task
     @DeleteMapping("/{todoId}")
